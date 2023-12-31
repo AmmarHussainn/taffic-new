@@ -17,7 +17,13 @@ import  eyeicon from "./Images/eyeicon.png";
 import uslogoicon from "./Images/uslogoicon.png";
 import danger from "./Images/danger.png";
 import authbanner from "./Images/authbanner.png";
+import bracket from "./Images/bracket.png";
+import codebracket from "./Images/codebracket.png";
+import controlicon from "./Images/controlicon.png";
 export {
+  controlicon,
+  codebracket,
+  bracket,
   authbanner,
   uslogoicon,
   eyeicon,

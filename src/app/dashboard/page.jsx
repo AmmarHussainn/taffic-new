@@ -275,10 +275,10 @@ export default function Home() {
   }, [show]);
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className='flex'>
         <Sidebar />
-        <div className='flex w-[80%] flex-col'>
+        <div className='flex w-full flex-col'>
           <InstructionAlert />
 
           <div className='flex flex-col'>
