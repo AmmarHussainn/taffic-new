@@ -20,7 +20,9 @@ import authbanner from "./Images/authbanner.png";
 import bracket from "./Images/bracket.png";
 import codebracket from "./Images/codebracket.png";
 import controlicon from "./Images/controlicon.png";
+import googleicon from "./Images/googleicon.png";
 export {
+  googleicon,
   controlicon,
   codebracket,
   bracket,

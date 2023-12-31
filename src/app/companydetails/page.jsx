@@ -2,12 +2,11 @@
 import {
   backarrow,
   eyeicon,
+  googleicon,
   jobicon,
   linkedin,
   safari,
-  searchicon,
   snitcherlogo,
-  uslogoicon,
 } from '@/assets';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
@@ -143,8 +142,8 @@ const Page = () => {
 
   return (
     <>
-      <Navbar />
-      <div className='flex w-full'>
+      {/* <Navbar /> */}
+      <div className='flex w-full mt-5'>
         <Sidebar />
         <div className='container mx-auto px-5 w-full'>
           <div className='flex w-full justify-between items-center my-1'>
@@ -155,7 +154,7 @@ const Page = () => {
             />
             <div className=' flex max-w-[180px] w-full justify-evenly items-center'>
               <div className=' border rounded-lg  p-1'>
-                <Image src={searchicon} alt='searchicon' className='w-8 h-6' />
+                <Image src={googleicon} alt='searchicon' className='w-8 h-6' />
               </div>
               <Image src={linkedin} alt='linkedin' className='w-10 h-8' />
               <Image src={safari} alt='safari' className='w-10 h-8' />

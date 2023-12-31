@@ -1,25 +1,50 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
+// ... (existing code)
 
-const PricingPlan = ({ title, price, opportunities, features, priceId }) => {
+const PricingPlan = ({ title, price, opportunities, features, priceId, isFreeTrial }) => {
   const [subscriptionStatus, setSubscriptionStatus] = useState(null);
 
   const redirectToCheckout = async () => {
-    const stripe = await loadStripe('pk_test_51OSccqJ7ffyJlYAYbAfBazurVIjvEm7ZHtWzrIa8VppnJtMzugDc2qlHKHeWFrkYEZRnTPTeqATSxLAHetssOuqD00SyibsY5F');
-
-    const { error, sessionId } = await stripe.redirectToCheckout({
-      lineItems: [{ price: priceId, quantity: 1 }],
-      mode: 'subscription',
-      successUrl: `${window.location.origin}/dashboard`,
-      cancelUrl: window.location.origin + '/cancel',
-    });
-
-    if (error) {
-      console.error('Error redirecting to checkout:', error);
+    if (isFreeTrial) {
+      // Simulate free trial setup (replace this with your server-side logic)
+      setSubscriptionStatus({ status: 'freeTrial' });
+      // Redirect user to a thank you page or directly to the dashboard
+      window.location.href = `${window.location.origin}/dashboard`;
     } else {
-      // Store the session ID in your state
-      setSubscriptionStatus({ status: 'pending', sessionId });
+      // Proceed with the regular subscription checkout for paid plans
+      const stripe = await loadStripe('pk_test_51OSccqJ7ffyJlYAYbAfBazurVIjvEm7ZHtWzrIa8VppnJtMzugDc2qlHKHeWFrkYEZRnTPTeqATSxLAHetssOuqD00SyibsY5F');
+
+      const { error, sessionId } = await stripe.redirectToCheckout({
+        lineItems: [{ price: priceId, quantity: 1 }],
+        mode: 'subscription',
+        successUrl: `${window.location.origin}/dashboard`,
+        cancelUrl: window.location.origin + '/cancel',
+      });
+
+      if (error) {
+        console.error('Error redirecting to checkout:', error);
+      } else {
+        setSubscriptionStatus({ status: 'pending', sessionId });
+      }
+    }
+  };
+
+  const renderButton = () => {
+    if (subscriptionStatus && subscriptionStatus.status === 'freeTrial') {
+      return (
+        <p className="text-sm text-gray-600 mt-2">You are currently in a 7-day free trial.</p>
+      );
+    } else {
+      return (
+        <button
+          onClick={redirectToCheckout}
+          className="w-full text-white border rounded bg-primary hover:text-white hover:shadow-xl transition duration-150 ease-in-out py-4 mt-4"
+        >
+          {isFreeTrial ? 'Start 7-Day Free Trial' : 'Get Started'}
+        </button>
+      );
     }
   };
 
@@ -39,20 +64,27 @@ const PricingPlan = ({ title, price, opportunities, features, priceId }) => {
         {subscriptionStatus && subscriptionStatus.status === 'pending' && (
           <p className="text-sm text-gray-600 mt-2">Subscription pending...</p>
         )}
-        <button
-          onClick={redirectToCheckout}
-          className="w-full text-white border rounded bg-primary hover:text-white hover:shadow-xl transition duration-150 ease-in-out py-4 mt-4"
-        >
-          Get Started
-        </button>
+        {renderButton()}
       </div>
     </div>
   );
 };
 
-
 const Page = () => {
   const pricingPlans = [
+    {
+      title: 'Free Trial',
+      price: '$0 USD',
+      opportunities: '7',
+      features: [
+        '2,000 Visitors identified',
+        'Demographic & Firmographic Data',
+        'Direct Contact Information',
+        'Custom Audience Exports',
+      ],
+      priceId: 'price_FREE_TRIAL_ID', // Replace with your actual price ID for the free trial
+      isFreeTrial: true,
+    },
     {
       title: 'Basic',
       price: '$399 USD',
@@ -63,7 +95,8 @@ const Page = () => {
         'Direct Contact Information',
         'Custom Audience Exports',
       ],
-      priceId: 'price_1OT5FCJ7ffyJlYAYeFjwXwXC', // Replace with your actual price ID
+      priceId: 'price_1OTP8VJ7ffyJlYAY56WbGqez', // Replace with your actual price ID
+      isFreeTrial: false,
     },
     {
       title: 'Growth',
@@ -76,10 +109,11 @@ const Page = () => {
         'Custom Audience Exports',
       ],
       priceId: 'price_1OT5H2J7ffyJlYAYwkdrBkt7', // Replace with your actual price ID
+      isFreeTrial: false,
     },
     {
       title: 'Enterprise',
-      price: '$1900.00 USD',
+      price: '$1900 USD',
       opportunities: '15',
       features: [
         '12,000 Visitors identified',
@@ -88,7 +122,9 @@ const Page = () => {
         'Custom Audience Exports',
       ],
       priceId: 'price_1OT5IwJ7ffyJlYAYog2RPYJf', // Replace with your actual price ID
+      isFreeTrial: false,
     },
+   
   ];
 
   return (
@@ -110,3 +146,4 @@ const Page = () => {
 };
 
 export default Page;
+

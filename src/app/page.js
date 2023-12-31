@@ -60,13 +60,15 @@ const page = () => {
     }
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     if(loginEmail && loginPass){
       try {
         const response = await axios.post('https://agile-sierra-68640-c9fe32348d22.herokuapp.com/users/login', {
           email : loginEmail,
           password : loginPass.toString(),
         });
+        console.log('Registration successful:', response);
         localStorage.setItem('token', response.data.token);    
         localStorage.setItem('userId', response.data.data);  
         router.push('/dashboard')  
@@ -250,7 +252,7 @@ const page = () => {
         </div>
       
 
-         <button onClick={()=>handleLogin()} className='w-full bg-primary text-white py-3 rounded-md'>Login</button>
+         <button onClick={(e)=>handleLogin(e)} className='w-full bg-primary text-white py-3 rounded-md'>Login</button>
 
       
       </form> : null
