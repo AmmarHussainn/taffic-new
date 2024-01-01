@@ -22,8 +22,8 @@ const PricingPlan = ({
 
       console.log('data', data);
       const response = await axios.post(
-        // 'https://agile-sierra-68640-c9fe32348d22.herokuapp.com/users/updateUser',
-        'http://localhost:8080/users/updateUser',
+        'https://agile-sierra-68640-c9fe32348d22.herokuapp.com/users/updateUser',
+        // 'http://localhost:8080/users/updateUser',
         {
           userId: data._id,
         }

@@ -33,8 +33,8 @@ const page = () => {
     }
     try {
       const response = await axios.post(
-        // 'https://agile-sierra-68640-c9fe32348d22.herokuapp.com/users/register',
-        'http://localhost:8080/users/register',
+        'https://agile-sierra-68640-c9fe32348d22.herokuapp.com/users/register',
+        // 'http://localhost:8080/users/register',
         {
           email,
           businessName,
@@ -74,8 +74,8 @@ const page = () => {
     if (loginEmail && loginPass) {
       try {
         const response = await axios.post(
-          // 'https://agile-sierra-68640-c9fe32348d22.herokuapp.com/users/login',
-          'http://localhost:8080/users/login',
+          'https://agile-sierra-68640-c9fe32348d22.herokuapp.com/users/login',
+         
           {
             email: loginEmail,
             password: loginPass.toString(),
