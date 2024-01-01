@@ -159,6 +159,7 @@ import CustomsModal from '@/components/CustomModal';
 import { danger, wordPress } from '@/assets';
 import { Hidden } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import CustomCopytoClip from '@/components/CopyToClip';
 
 export default function Home() {
   const [selected, setSelected] = useState('All');
@@ -168,8 +169,12 @@ export default function Home() {
 
   useEffect(()=>{
     const token = localStorage.getItem('token')
+    const user = localStorage.getItem('token')
     console.log('token in signup',token)
-    if(!token){
+    if(token && user.isSubscribed == false){
+      router.push('/paymentplans')
+    }
+    else if(!token ){
       router.push('/')
     }
 
@@ -219,12 +224,12 @@ export default function Home() {
         </div>
 
         <div
-          onClick={() => {
-            navigator.clipboard.writeText(Pastedata);
-          }}
+          // onClick={() => {
+          //   navigator.clipboard.writeText(Pastedata);
+          // }}
           className=' ml-auto w-fit p-2 cursor-pointer mt-[30px] rounded-xl text-white bg-[#5E81FF]'
         >
-          copy to clipboard
+         <CustomCopytoClip data={Pastedata} />
         </div>
 
         <div

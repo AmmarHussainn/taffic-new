@@ -21,6 +21,7 @@ import bracket from "./Images/bracket.png";
 import codebracket from "./Images/codebracket.png";
 import controlicon from "./Images/controlicon.png";
 import googleicon from "./Images/googleicon.png";
+import mainBanner from "./Images/mainBanner.png";
 export {
   googleicon,
   controlicon,
@@ -45,6 +46,7 @@ export {
   danger,
   instructioncrossicon,
   wordPress,
+  mainBanner
 };
 
 

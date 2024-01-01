@@ -11,7 +11,7 @@ const page = () => {
         <Image 
           src={authbanner}
           alt="imagebanner"
-          className="w-full max-w-[100%] lg:max-w-[40%] h-[100vh]"
+          className="w-full max-w-[100%] lg:max-w-[50%] h-[100vh]"
         />
         <div className="bg-white  rounded px-8 pt-6 pb-8 mb-4 w-full max-w-[100%] lg:max-w-[50%]">
             <p>We’re glad to have you! 👋</p>
