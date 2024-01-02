@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import env from '@/config';
 
 const page = () => {
   const [email, setEmail] = useState('');
@@ -33,8 +34,8 @@ const page = () => {
     }
     try {
       const response = await axios.post(
-        'https://agile-sierra-68640-c9fe32348d22.herokuapp.com/users/register',
-        // 'http://localhost:8080/users/register',
+        // 'https://agile-sierra-68640-c9fe32348d22.herokuapp.com/users/register',
+        `${env.APIURL}/users/register`,
         {
           email,
           businessName,
@@ -74,7 +75,9 @@ const page = () => {
     if (loginEmail && loginPass) {
       try {
         const response = await axios.post(
-          'https://agile-sierra-68640-c9fe32348d22.herokuapp.com/users/login',
+          // 'https://agile-sierra-68640-c9fe32348d22.herokuapp.com/users/login',
+          `${env.APIURL}/users/login`,
+          // `http://localhost:8080/users/login`,
          
           {
             email: loginEmail,
@@ -109,8 +112,8 @@ const page = () => {
   return (
     <>
       {/* <div className='min-h-screen flex flex-wrap-reverse  lg:flex-nowrap items-center justify-center gap-8  md:justify-start '> */}
-      <div className='min-h-screen flex w-[100%] '>
-        <div className='w-[35%] bg-[#F4F9FF] flex items-center'>
+      <div className='min-h-screen gap-14  flex w-[100%] justify-between  '>
+        <div className='w-[40%] bg-[#F4F9FF] justify-between flex items-center'>
           <Image
             src={mainBanner}
             alt='imagebanner'

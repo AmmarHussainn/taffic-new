@@ -18,6 +18,7 @@ import axios from 'axios';
 import Flag from 'react-flags-select';
 // import 'react-flags-select/css/react-flags-select.css';
 import { US } from 'country-flag-icons/react/3x2';
+import env from '@/config';
 
 const Page = () => {
   const [activeTab, setActiveTab] = useState('timeline');
@@ -54,9 +55,15 @@ const Page = () => {
   };
 
   useEffect(() => {
-    const apiUrl = 'https://agile-sierra-68640-c9fe32348d22.herokuapp.com/userDetals';
+    // const apiUrl = 'https://agile-sierra-68640-c9fe32348d22.herokuapp.com/userDetals';
+    let user = JSON.parse(localStorage.getItem('user'))
+    const apiUrl = `${env.APIURL}/userDetals`;
     axios
-      .get(apiUrl)
+      .get(apiUrl , {
+        params: {
+          userId: user._id
+        }
+      })
       .then((response) => {
         const codeMaxTimeMap = new Map();
         response.data.data.forEach((data) => {
