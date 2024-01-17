@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import axios from 'axios';
 import env from '@/config';
+import { useRouter } from 'next/navigation';
 // ... (existing code)
 
 const PricingPlan = ({
@@ -22,16 +23,11 @@ const PricingPlan = ({
       let data = JSON.parse(localStorage.getItem('user'));
 
       console.log('data', data);
-      const response = await axios.post(
-        `${env.APIURL}/users/updateUser`,
-        {
-          userId: data._id,
-        }
-        
-      );
+      const response = await axios.post(`${env.APIURL}/users/updateUser`, {
+        userId: data._id,
+      });
       if (response.data.success) {
-       
-        localStorage.setItem('user',JSON.stringify(response.data.data))
+        localStorage.setItem('user', JSON.stringify(response.data.data));
         window.location.href = `${window.location.origin}/dashboard`;
       }
     } else {
@@ -44,9 +40,10 @@ const PricingPlan = ({
         lineItems: [{ price: priceId, quantity: 1 }],
         mode: 'subscription',
         successUrl: `${window.location.origin}/dashboard`,
-        cancelUrl: window.location.origin + '/cancel',
+        cancelUrl: window.location.origin + '/paymentplans',
+        clientReferenceId: JSON.parse(localStorage.getItem('user'))._id,
       });
-
+      //
       if (error) {
         console.error('Error redirecting to checkout:', error);
       } else {
@@ -112,9 +109,23 @@ const PricingPlan = ({
 
 const Page = () => {
   const [freeTrialAvailed, setFreeTrialAvailed] = useState(false);
+  let router = useRouter();
   useEffect(() => {
+    let token = localStorage.getItem('token') || false;
+    if (token == false) {
+      router.push('/');
+    }
+   
     let data = JSON.parse(localStorage.getItem('user'));
-    if (data.freeTrialAvailed) setFreeTrialAvailed(true);
+
+    if (data?.freeTrialAvailed) setFreeTrialAvailed(true);
+
+    if (
+      data?.subscription &&
+      data?.subscription?.payment_status == 'paid' &&
+      data?.subscription.expires_at > Date.now()
+    )
+      router.push('/dashboard');
   }, []);
   const pricingPlans = [
     {
@@ -140,7 +151,7 @@ const Page = () => {
         'Direct Contact Information',
         'Custom Audience Exports',
       ],
-      priceId: 'price_1OTP8VJ7ffyJlYAY56WbGqez', // Replace with your actual price ID
+      priceId: 'price_1OVH1FJ7ffyJlYAYyrUYAoGO', // Replace with your actual price ID
       isFreeTrial: false,
     },
     {

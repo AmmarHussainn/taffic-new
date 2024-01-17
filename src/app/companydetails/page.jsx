@@ -22,7 +22,7 @@ import env from '@/config';
 
 const Page = () => {
   const [activeTab, setActiveTab] = useState('timeline');
-  const [showModel, setShowModel] = useState(true);
+  const [showModel, setShowModel] = useState(false);
   const [show, setShow] = useState(false);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
@@ -147,6 +147,15 @@ const Page = () => {
     );
   };
 
+  function getCountryCodeFromData(dataObject) {
+    for (const { data } of Object.values(dataObject)) {
+      if (data.ip && data.ip.countryCode) {
+        return data.ip.countryCode;
+      }
+    }
+    return null;
+  }
+
   return (
     <>
       {/* <Navbar /> */}
@@ -260,15 +269,16 @@ const Page = () => {
                           </div>
 
                           <div className='flex items-center gap-4'>
-                            {ele[0].data?.ip?.countryCode && (
+                            {
                               <img
-                                src={`https://flagsapi.com/${ele[0].data.ip.countryCode}/flat/24.png`}
+                                // src={`https://flagsapi.com/${ele[0].data.ip.countryCode}/flat/24.png`}
+                                src={`https://flagsapi.com/${getCountryCodeFromData(ele)}/flat/24.png`}
                                 alt='uslogo'
                                 width={24}
                                 height={24}
                                 className='w-[24px] h-[20px]'
                               />
-                            )}
+                            }
                             <p>{ele[0].data?.ip?.country}</p>
                           </div>
 

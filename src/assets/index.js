@@ -22,7 +22,9 @@ import codebracket from "./Images/codebracket.png";
 import controlicon from "./Images/controlicon.png";
 import googleicon from "./Images/googleicon.png";
 import mainBanner from "./Images/mainBanner.png";
+import logout from "./Images/logout.png";
 export {
+  logout,
   googleicon,
   controlicon,
   codebracket,

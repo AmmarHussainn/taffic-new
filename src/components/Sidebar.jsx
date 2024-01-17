@@ -1,3 +1,4 @@
+
 'use client';
 import {
   billingicon,
@@ -5,6 +6,7 @@ import {
   codebracket,
   companiesicon,
   controlicon,
+  logout,
   peoplesicon,
   settingicon,
   tdllogo,
@@ -23,6 +25,7 @@ const Sidebar = () => {
     { title: 'Schedule', src: billingicon, gap: true },
     { title: 'Companies', src: bracket },
     { title: 'Settings', src: settingicon },
+    { title : 'Logout' , src : logout },
     { title: 'Files', src: billingicon, gap: true },
    
   ];
@@ -43,6 +46,7 @@ const Sidebar = () => {
         >
           <Image 
             src= {controlicon}
+            alt='controlicon'
             className={`absolute cursor-pointer -right-3 top-24 w-7 border-dark-purple
            border-2 rounded-full  ${!open && 'rotate-180'}`}
             onClick={() => setOpen(!open)}
@@ -50,6 +54,7 @@ const Sidebar = () => {
           <div className='flex gap-x-4 items-center'>
             <Image
               src={tdllogo}
+              alt='TDLLGOG'
               className={`cursor-pointer duration-500 ${
                 open && 'rotate-[360deg]'
               }`}
@@ -71,9 +76,7 @@ const Sidebar = () => {
                   index === 0 && 'bg-light-white'
                 } `}
               >
-                {
-                  console.log('Menu',Menu )
-                }
+                
                 {Menu.title == 'Schedule' ? (
                   <>
                   <div className=' w-full' >
@@ -93,7 +96,7 @@ const Sidebar = () => {
                    {Menu.title =="Files" ? (
                     <>
                     <div className='py-3 w-full bg=[#b0b6c3] shadow-md  flex items-center justify-center'>
-                   <Image  src={codebracket}/>
+                   <Image  src={codebracket} alt='codebracket'/>
                     </div>
                      </> 
                    ) : (

@@ -147,12 +147,35 @@ const page = () => {
                 <button className='bg-primary text-white px-3 py-1 rounded-md'>Upgrade</button>
                 <button className='bg-red-600 text-white px-3 py-1 rounded-md'>Cancel</button>
                 </div>
+
+              
+
+
               </div>
 
               <div className='w-full'>
                 <p> Payment method here & update button </p>
               </div>
             </div>
+
+            <div className='grid w-full  grid-cols-4 place-content-between place-items-center  '>
+                <div className='bg-white w-[150px] px-2 rounded-md py-2 text-center'>
+                   <p className='font-semibold'>Basic</p>
+                   <button className='bg-primary text-white px-2 mt-20 rounded-lg py-1'>Downgrade</button>
+                </div>
+                <div className='bg-white w-[150px] px-2 rounded-md py-2 text-center'>
+                   <p className='font-semibold'>Regular</p>
+                   <button className='bg-[#D2D2D2] text-white px-2 mt-20 rounded-lg py-1'>Current</button>
+                </div>
+                <div className='bg-white w-[150px] px-2 rounded-md py-2 text-center'>
+                   <p className='font-semibold'>Advanced</p>
+                   <button className='bg-primary text-white px-2 mt-20 rounded-lg py-1'>Upgrade</button>
+                </div>
+                <div className='bg-white w-[150px] px-2 rounded-md py-2 text-center'>
+                   <p className='font-semibold'>Agency/Unlimited</p>
+                   <button className='bg-primary text-white px-2 mt-20 rounded-lg py-1'>Schedule</button>
+                </div>
+                </div>
           </div>
         </div>
       </div>

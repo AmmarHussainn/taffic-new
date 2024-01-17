@@ -7,6 +7,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import env from '@/config';
+import { logging } from '../../next.config';
 
 const page = () => {
   const [email, setEmail] = useState('');
@@ -14,9 +15,10 @@ const page = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [emailExists, setEmailExists] = useState(false);
-  const [loginScreen, setLoginScreen] = useState(false);
+  const [loginScreen, setLoginScreen] = useState('login');
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPass, setLoginPass] = useState('');
+  const [forgetEmail ,setForgetEmail] = useState('');
   let router = useRouter();
   // useEffect(() => {
   //   const token = localStorage.getItem('token');
@@ -46,7 +48,7 @@ const page = () => {
         console.log('Registration successful:', response.data);
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.data));
-        if (response.data.data.isSubscribed) router.push('/dashboard');
+        if (response.data.data?.subscription && response.data.data?.subscription?.payment_status == 'paid' && response.data.data?.subscription.expires_at > Date.now()) router.push('/dashboard');
         else router.push('/paymentplans');
       }
     } catch (error) {
@@ -87,8 +89,8 @@ const page = () => {
         console.log('Registration successful:', response);
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.data));
-        if(response.data.data.isSubscribed)router.push('/dashboard');
-        if(!response.data.data.isSubscribed)router.push('/paymentplans');
+        if (response.data.data?.subscription && response.data.data?.subscription?.payment_status == 'paid' && response.data.data?.subscription.expires_at > Date.now()) router.push('/dashboard');
+        else router.push('/paymentplans');
         
       } catch (error) {
         if (error.response) {
@@ -101,18 +103,42 @@ const page = () => {
       }
     }
   };
+ const forgetLogin = async (e) => {
+    e.preventDefault();
+    if (forgetEmail ) {
+      try {
+        const response = await axios.post(
+          // 'https://agile-sierra-68640-c9fe32348d22.herokuapp.com/users/login',
+          `${env.APIURL}/users/forgetPassword`,
+          // `http://localhost:8080/users/login`,
+         
+          {
+            email: forgetEmail,
+           
+          }
+        );
+        console.log('Forget Password Response:', response.data);
+        
+      } catch (error) {
+         console.log('Invalid Email',error)
+      }
+    }
+ }
 
   const handleSignupClick = () => {
-    setLoginScreen(false);
+    setLoginScreen('signup');
   };
   const handleLoginClick = () => {
-    setLoginScreen(true);
+    setLoginScreen('login');
+  };
+  const handleForgetClick = () => {
+    setLoginScreen('forgetpassword');
   };
 
   return (
     <>
       {/* <div className='min-h-screen flex flex-wrap-reverse  lg:flex-nowrap items-center justify-center gap-8  md:justify-start '> */}
-      <div className='min-h-screen gap-14  flex w-[100%] justify-between  '>
+      <div className='min-h-screen gap-20 lg:gap-28  flex w-[100%] justify-between  '>
         <div className='w-[40%] bg-[#F4F9FF] justify-between flex items-center'>
           <Image
             src={mainBanner}
@@ -123,8 +149,8 @@ const page = () => {
           />
         </div>
         <div className='w-[65%]'>
-          {!loginScreen ? (
-            <form className='bg-white  rounded px-8  pb-8 mb-4 w-full max-w-[100%] lg:max-w-[50%]'>
+          {loginScreen == 'signup' ? (
+            <form className='bg-white pt-20   rounded px-8  pb-8 mb-4 w-full max-w-[100%] lg:max-w-[50%]'>
               <div className='flex justify-end gap-2 pb-20'>
                 <p>Already Registered </p>{' '}
                 <a
@@ -234,8 +260,8 @@ const page = () => {
             </form>
           ) : null}
 
-          {loginScreen ? (
-            <form className='bg-white  rounded px-8 6 pb-8 mb-4 w-full max-w-[100%] lg:max-w-[50%]'>
+          {loginScreen == 'login' ? (
+            <form className='bg-white pt-20   rounded px-8 6 pb-8 mb-4 w-full max-w-[100%] lg:max-w-[50%]'>
               <div className='flex justify-end gap-2 pb-20'>
                 <p>Not registered? </p>{' '}
                 <a
@@ -288,8 +314,8 @@ const page = () => {
                 <div className='absolute right-5 top-9'>
                   <SvgIcons.Hidden className='h-6  w-6 text-gray-500' />
                 </div>
+             <a className=' text-primary  text-sm underline cursor-pointer' onClick={handleForgetClick}  > Forget Password? </a>
               </div>
-
               <button
                 onClick={(e) => handleLogin(e)}
                 className='w-full bg-primary text-white py-3 rounded-md'
@@ -297,7 +323,50 @@ const page = () => {
                 Login
               </button>
             </form>
-          ) : null}
+          ) : loginScreen == 'forgetpassword' ?
+          <form className='bg-white pt-20   rounded px-8 6 pb-8 mb-4 w-full max-w-[100%] lg:max-w-[50%]'>
+          <div className='flex justify-end gap-2 pb-20'>
+            <p>Not registered? </p>{' '}
+            <a
+              className='underline text-primary cursor-pointer'
+              onClick={handleSignupClick}
+            >
+              Create an account
+            </a>
+          </div>
+
+          <p>Oh no! </p>
+          <h2 className='text-2xl font-bold mb-6 '>Forgot Password</h2>
+
+          <div className='mb-4 mt-7 relative'>
+            <label
+              className='block text-gray-700 text-sm font-bold mb-2'
+              htmlFor='email'
+            >
+              Email
+            </label>
+            <div className='flex items-center absolute inset-y-0 top-7 right-5 pl-1'>
+              <SvgIcons.Correct className='h-6 w-6 text-gray-500' />
+            </div>
+            <input
+              className=' shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+              id='email'
+              type='text'
+              placeholder='Email'
+              value={forgetEmail}
+              onInput={(e) => setForgetEmail(e.target.value)}
+            />
+          </div>
+
+         
+          <button
+            onClick={(e) => forgetLogin(e)}
+            className='w-full bg-primary text-white py-3 rounded-md'
+          >
+            Reset Email
+          </button>
+        </form>
+           : null}
         </div>
       </div>
     </>
